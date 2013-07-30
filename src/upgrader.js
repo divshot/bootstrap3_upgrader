@@ -70,7 +70,13 @@
       title: "Fix Button Color Classes",
       description: "Add <code>btn-default</code> to <code>btn</code> elements with no other color. Replace <code>btn-inverse</code> with <code>btn-default</code> since inverse has been removed from Bootstrap 3.",
       run: function(doc) {
+        var $buttons = $(doc).find(".btn:not(.btn-primary,.btn-success,.btn-info,.btn-warning,.btn-danger)");
+        var count = $buttons.length;
         
+        // Remove btn-inverse, add btn-default if no existing color class is matched
+        $buttons.removeClass('btn-inverse').addClass('btn-default');
+        
+        return (count > 0) ? count + " Replaced" : false;
       }
     },
     
@@ -78,7 +84,11 @@
       title: "Remove Dividers from Breadcrumbs",
       description: "Bootstrap 3 uses CSS to add the dividers between breadcrumbs. Remove all <code>span.divider</code> elements inside breadcrumbs.",
       run: function(doc) {
+        $dividers = $(doc).find(".breadcrumb .divider")
+        var count = $dividers.length;
         
+        $dividers.remove();
+        return (count > 0) ? count + " Replaced" : false;
       }
     },
     
