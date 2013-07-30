@@ -2,7 +2,7 @@
   var RULESET = [
     {
       title: "Upgrade CSS/JS CDN Reference",
-      description: "Inspect HTML for references to a recognized CDN version of Bootstrap and swapping it out for Bootstrap 3. Remove references to <code>bootstrap-responsive.css</code>.",
+      description: "Inspect HTML for references to a recognized BootstrapCDN version of Bootstrap and swap it out for Bootstrap 3.",
       run: function(doc) {
         var count = 0;
         
@@ -96,9 +96,76 @@
       title: "Replace 'mini' sizes with 'small'",
       description: "The 'mini' sizes on buttons and pagination have been removed. Switch <code>btn-mini</code> and <code>pagination-mini</code> for their <code>-small</code> versions instead.",
       run: function(doc) {
+        var count = 0
         
+        // btn-mini and pagination-mini are both gone, swap them for -small instead
+        var types = ['btn','pagination']
+        for (var i = 0; i < types.length; i++) {
+          var $targets = $(doc).find("." + types[i] +"-mini");
+          $targets.removeClass(types[i] + "-mini");
+          $targets.addClass(types[i] + "-small");
+          
+          count += $targets.length;
+        }
+        
+        return (count > 0) ? count + " Replaced" : false;        
       }
-    }
+    },
+    
+    {
+      title: "Helper Class Specificity",
+      description: "Prefix <code>muted</code> with <code>text-</code> and prefix <code>unstyled</code> and <code>inline</code> with <code>list-</code> (on <code>ul</code> and <code>ol</code> elements only).",
+      run: function(doc) {
+        var count = 0;
+        
+        $muted = $(doc).find(".muted");
+        $muted.removeClass('muted').addClass('text-muted');
+        count += $muted.length;
+        
+        $unstyled = $(doc).find("ul.unstyled, ol.unstyled");
+        $unstyled.removeClass('unstyled').addClass('list-unstyled');
+        count += $unstyled.length;
+        
+        $inline = $(doc).find("ul.inline, ol.inline");
+        $inline.removeClass('inline').addClass('list-inline');
+        count += $inline.length;
+        
+        return (count > 0) ? count + " Replaced" : false;        
+      }
+    },
+      
+    {
+      title: "Hero Unit is now Jumbotron",
+      description: "The component formerly known as a Hero Unit is now a Jumbotron, so swap <code>hero-unit</code> for <code>jumbotron</code>.",
+      run: function(doc) {
+        $jumbotrons = $(".hero-unit");
+        $jumbotrons.removeClass('hero-unit').addClass('jumbotron');
+        var count = $jumbotrons.length;
+        
+        return (count > 0) ? count + " Replaced" : false;
+      }
+    },
+  
+    {
+      title: "Progress Bar Structural Changes",
+      description: "",
+      run: function (doc) {
+      }
+    },
+  
+    {
+      title: "Form Structural Changes",
+      description: "",
+      run: function (doc) {
+      }
+    },
+  
+    {
+      title: "Modal Hide Class Removal",
+      description: "",
+      run: function (doc) {
+      }
+    } 
   ];
   
   var Upgrader = {

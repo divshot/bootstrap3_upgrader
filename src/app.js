@@ -11,7 +11,8 @@ function ConverterCtrl($scope) {
     '    <div class="container-fluid">\n' +
     '      <div class="row-fluid">\n' +
     '        <div class="span6">\n' +
-    '          <a class="btn">Button</a>\n' +
+    '          <a class="btn btn-mini">Button</a>\n' +
+    '          <p class="muted">And now some muted text...</p>\n' +
     '        </div>\n' +
     '        <div class="span6">\n' + 
     '          <ul class="breadcrumb">\n' +
