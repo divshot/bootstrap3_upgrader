@@ -3,33 +3,46 @@
 <html>
   
   <head>
-    <title>New Page</title>
+    <title>Bootstrap 3 HTML Upgrader - Brought to you by Divshot</title>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
-    <script src="upgrader.js"></script>
-    <script src="app.js"></script>
+    <script src="lib/dom_html.js"></script>
+    <script src="src/upgrader.js"></script>
+    <script src="src/app.js"></script>
+    <style>textarea.form-control { font-size: 11px; font-family: monospace; } </style>
   </head>
   
-  <body ng-app="" ng-init="rules=BootstrapUpgrader.rules">
+  <body ng-app ng-controller="ConverterCtrl">
     <div class="container">
       <h1 class="page-header text-center">Bootstrap 3 Upgrader <br class="visible-sm"><small>Get your HTML from 2.3 to 3.0!</small></h1>
       <div class="row">
-        <div class="col-lg-8">
-          <ul class="list-group" ng-controller="RuleListCtrl">
-            <li class="list-group-item" ng-repeat="rule in rules">
-              <h4 class="list-group-item-heading">{{rule.title}} <span class="label label-success pull-right">5 Changes</span></h4>
-              <p ng-bind-html-unsafe="rule.description"></p>
-            </li>
-          </ul>
-        </div>
-        <div class="col-lg-4">
-          <div class="panel panel-default">
+        <div class="col-lg-6">
+          <form ng-submit="runRules()"><div class="panel panel-warning">
             <div class="panel-heading">Source HTML
             </div>
-            <textarea class="form-control" rows="10"></textarea>
+            <textarea id="source" class="form-control" rows="10" ng-model="source"></textarea>
+            <div class="panel-footer"><button type="submit" class="btn btn-success btn-block">Convert This Code</button></div>
+          </div></form>
+          
+          <div class="panel panel-success">
+            <div class="panel-heading">Result HTML
+            </div>
+            <textarea id="result" class="form-control" rows="10" ng-model="result"></textarea>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class='alert alert-info'><a data-dismiss='alert' class='close'>&times;</a> These are the rules our automated upgrader takes when it upgrades your HTML. It's also a handy checklist to keep in mind if you're upgrading code manually!</div>
+          <div class="panel panel-primary">
+            <div class="panel-heading">The Process</div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" ng-repeat="rule in rules">
+                <h4 class="list-group-item-heading">{{rule.title}} <span class="label label-default pull-right" ng-show="hasRun">{{rule.runMessage}}</span></h4>
+                <p ng-bind-html-unsafe="rule.description"></p>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
