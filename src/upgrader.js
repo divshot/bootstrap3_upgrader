@@ -185,7 +185,24 @@
         }
         return (count > 0) ? count + ' Replaced' : false;
       }
-    }    
+    },
+
+    {
+      title: "Upgrade Wells",
+      description: "Change wells from <code>well-[small|large]</code> to <code>well-[sm|lg]</code>",
+      run: function(doc) {
+        var longSizes = ['small', 'large'];
+        var shortSizes = ['sm', 'lg'];
+        var count = 0;
+        for (var i = 0; i < longSizes.length; i++) {
+          var selector = 'well-' + longSizes[i];
+          var $targets = $(doc).find('.' + selector);
+          $targets.removeClass(selector).addClass('well-' + shortSizes[i]);
+          count += $targets.length;
+        }
+        return (count > 0) ? count + ' Replaced' : false;
+      }
+    }
   ];
   
   var Upgrader = {
