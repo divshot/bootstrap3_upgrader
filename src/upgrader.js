@@ -165,7 +165,27 @@
       description: "",
       run: function (doc) {
       }
-    } 
+    },
+
+    {
+      title: "Upgrade Responsive Classes",
+      description: "Change responsive classes from <code>[visible|hidden]-[phone|tablet|desktop]</code> to <code>[visible|hidden]-[sm|md|lg]</code>",
+      run: function(doc) {
+        var prefixes = ['visible', 'hidden'];
+        var devices = ['phone', 'tablet', 'desktop'];
+        var sizes = ['sm', 'md', 'lg'];
+        var count = 0;
+        for (var i = 0; i < prefixes.length; i++) {
+          for (var j = 0; j < devices.length; j++) {
+            var selector = prefixes[i] + '-' + devices[j];
+            var $targets = $(doc).find('.' + selector);
+            $targets.removeClass(selector).addClass(prefixes[i] + '-' + sizes[j])
+            count += $targets.length;
+          }
+        }
+        return (count > 0) ? count + ' Replaced' : false;
+      }
+    }    
   ];
   
   var Upgrader = {
