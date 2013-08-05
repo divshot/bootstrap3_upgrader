@@ -147,9 +147,26 @@
     },
   
     {
-      title: "Progress Bar Structural Changes",
-      description: "",
+      title: "Upgrade Progress Bars",
+      description: "New structure is now <code>.progress</code> on the outer <code>&lt;div&gt;</code> and <code>.progress-bar</code> on the inner <code>&lt;div&gt;</code>. Instead of placing modifier classes on the parent, they are placed directly on the bars (e.g., <code>.progress-bar-info</code>) in addition to the required <code>.progress-bar</code> class.",
       run: function (doc) {
+        var styles = ['info', 'success', 'warning', 'danger'];
+        var count = 0;
+        // replace bar with progress-bar
+        var $targets = $(doc).find('.progress .bar');
+        $targets.removeClass('bar').addClass('progress-bar');
+        count += $targets.length;
+        for (var i = 0; i < styles.length; i++) {
+          // move progress-style to progress-bar-style on progress-bar
+          var $progressTargets = $(doc).find('.progress-' + styles[i]);
+          $progressTargets.removeClass('progress-' + styles[i]).children('.progress-bar').addClass('progress-bar-' + styles[i]);
+          count += $progressTargets.length;
+          // move bar-style to progress-bar-style on progress-bar
+          var $barTargets = $(doc).find('.bar-' + styles[i]);
+          $barTargets.removeClass('bar-' + styles[i]).addClass('progress-bar-' + styles[i]);
+          count += $barTargets.length;
+        }
+        return (count > 0) ? count + ' Replaced' : false;
       }
     },
   
