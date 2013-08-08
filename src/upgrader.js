@@ -114,7 +114,7 @@
     
     {
       title: "Navbar Structural Changes",
-      description: "<p>Navbars have also gone under major structural change. Here's a summary of what we're doing:</p><ul><li>Replace <code>.navbar-search</code> with <code>.navbar-form</code></li><li>Replace <code>.navbar-inner</code> with <code>.container</code></li><li>Replace <code>.navbar > .nav</code> with <code>.navbar-nav</code></li><li><code>.brand</code> is now <code>.navbar-brand</code></li></ul>",
+      description: "<p>Navbars have also gone under major structural change. Here's a summary of what we're doing:</p><ul><li>Replace <code>.navbar-search</code> with <code>.navbar-form</code></li><li>Replace <code>.navbar-inner</code> with <code>.container</code></li><li>Replace <code>.navbar .nav</code> with <code>.navbar-nav</code></li><li><code>.brand</code> is now <code>.navbar-brand</code></li></ul>",
       run: function (doc) {
         var count = 0;
         

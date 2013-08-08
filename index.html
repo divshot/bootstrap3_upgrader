@@ -16,14 +16,25 @@
     <style>
       textarea.form-control { font-size: 11px; font-family: monospace; }
       footer { margin: 30px 0; padding-top: 10px; border-top: 1px solid #ddd; }
+      .bs-upgrader-nav { background-color: #563d7c; }
+      .bs-upgrader-nav .navbar-brand { color: white; }
+      .bs-upgrader-nav .navbar-text, .bs-upgrader-nav .navbar-link { color: #edf; }
     </style>
   </head>
   
   <body ng-app ng-controller="ConverterCtrl">
+    <header class="navbar navbar-static-top navbar-inverse bs-upgrader-nav">
+      <div class="container">
+        <a class="navbar-brand pull-left" href="index.html">Bootstrap Upgrader</a>
+        <div class="navbar-text pull-right">created by <a href="http://www.divshot.com" class="navbar-link">Divshot</a></div>
+        <div class="navbar-text pull-left visible-lg">Update your Bootstrap 2.3 HTML to be 3.0 compatible!</div>
+        <div class="navbar-text pull-right"><a href="https://twitter.com/share" class="twitter-share-button" data-via="divshot">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></div>
+      </div>
+    </header>
     <div class="container">
-      <h1 class="page-header text-center">Bootstrap 3 HTML Upgrader <br class="hidden-lg"><small>Get your HTML from Bootstrap 2.3 to 3.0!</small></h1>
-      <p class='lead'>We've gone through the Bootstrap 3 documentation and tried our best to extract out all the changes into an automatic tool. These are the rules our automated upgrader takes when it modifies your HTML, but it's also a handy checklist to keep in mind if you're upgrading code manually!</p>
       <div class="alert alert-warning"><a class="close" data-dismiss="alert">&times;</a> <b>Warning:</b> This tool should be considered a "best effort" and may have gaps. If something seems wonky, <a href="https://github.com/divshot/bootstrap3_upgrader/issues" class="alert-link"><b>report it on GitHub</b></a>!</div>
+      <p class='lead'>We've gone through the Bootstrap 3 documentation and tried our best to extract out all the changes into an automatic tool. These are the rules our automated upgrader takes when it modifies your HTML, but it's also a handy checklist to keep in mind if you're upgrading code manually!</p>
       <div class="row">
         <div class="col-lg-6">
           <div class="panel panel-primary">
@@ -40,7 +51,7 @@
           <form ng-submit="runRules()"><div class="panel panel-warning">
             <div class="panel-heading">Source HTML
             </div>
-            <textarea id="source" class="form-control" rows="6" ng-model="source"></textarea>
+            <textarea id="source" class="form-control" rows="10" ng-model="source"></textarea>
             <div class="panel-footer"><button type="submit" class="btn btn-success btn-block">Convert This Code</button></div>
           </div></form>
           
