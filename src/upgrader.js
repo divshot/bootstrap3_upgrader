@@ -147,26 +147,6 @@
     },
     
     {
-      title: "Replace 'mini' sizes with 'small'",
-      description: "The 'mini' sizes on buttons and pagination have been removed. Switch <code>btn-mini</code> and <code>pagination-mini</code> for their <code>-small</code> versions instead.",
-      run: function(doc) {
-        var count = 0
-        
-        // btn-mini and pagination-mini are both gone, swap them for -small instead
-        var types = ['btn','pagination']
-        for (var i = 0; i < types.length; i++) {
-          var $targets = $(doc).find("." + types[i] +"-mini");
-          $targets.removeClass(types[i] + "-mini");
-          $targets.addClass(types[i] + "-small");
-          
-          count += $targets.length;
-        }
-        
-        return (count > 0) ? count + " Replaced" : false;        
-      }
-    },
-    
-    {
       title: "Helper Class Specificity",
       description: "Prefix <code>muted</code> with <code>text-</code> and prefix <code>unstyled</code> and <code>inline</code> with <code>list-</code> (on <code>ul</code> and <code>ol</code> elements only).",
       run: function(doc) {
@@ -252,17 +232,21 @@
     },
 
     {
-      title: "Upgrade Wells",
-      description: "Change wells from <code>well-[small|large]</code> to <code>well-[sm|lg]</code>",
+      title: "Upgrade Button, Pagination, and Well sizes.",
+      description: "Change sizes from <code>well-[mini|small|large]</code> to <code>well-[xs|sm|lg]</code>",
       run: function(doc) {
-        var longSizes = ['small', 'large'];
-        var shortSizes = ['sm', 'lg'];
+        var types = ['btn', 'pagination', 'well'];
+        var longSizes = ['mini', 'small', 'large'];
+        var shortSizes = ['xs', 'sm', 'lg'];
         var count = 0;
-        for (var i = 0; i < longSizes.length; i++) {
-          var selector = 'well-' + longSizes[i];
-          var $targets = $(doc).find('.' + selector);
-          $targets.removeClass(selector).addClass('well-' + shortSizes[i]);
-          count += $targets.length;
+        for (var i = 0; i < types.length; i++) {
+          for (var j = 0; j <longSizes.length; j++) {
+            var selector = types[i] + '-' + longSizes[j];
+            var $targets = $(doc).find('.' + selector);
+            $targets.removeClass(selector)
+            $targets.addClass(types[i] + '-' + shortSizes[j]);
+            count += $targets.length;
+          }
         }
         return (count > 0) ? count + ' Replaced' : false;
       }
