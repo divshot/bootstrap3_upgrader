@@ -1,7 +1,7 @@
 (function() {
   var RULESET = [
     {
-      title: "Upgrade CSS/JS CDN Reference",
+      title: "Update CSS/JS CDN Reference",
       description: "Inspect HTML for references to a recognized BootstrapCDN version of Bootstrap and swap it out for Bootstrap 3.",
       run: function(doc) {
         var count = 0;
@@ -31,7 +31,7 @@
     },
     
     {
-      title: "Upgrade Grid System",
+      title: "Revamped Grid System",
       description: "Look for <code>spanX</code> non-form containers and replace with <code>col-lg-X col-sm-X</code> (leaving mobile to collapse into a single column). Change <code>row-fluid</code> to <code>row</code> since they are now the same. Remove <code>container-fluid</code> since it is now a noop.",
       run: function(doc) {
         var count = 0;
@@ -67,7 +67,24 @@
     },
     
     {
-      title: "Fix Button Color Classes",
+      title: "Form Structural Changes",
+      description: "<p>Forms have undergone some major changes. Here's some of what needs to happen:</p><ul><li><code>form-search</code> is gone, replace with <code>form-inline</code></li><li>Remove <code>input-block-level</code> as inputs are 100% width by default</li><li>Replace <code>help-inline</code> with <code>help-block</code> as inline is no longer supported</li><li>Wrap checkboxes and radios in an extra <code>&lt;div&gt;</code></li><li>Replace <code>.radio.inline</code> and <code>.checkbox.inline</code> with <code>-inline</code> instead</li></ul>",
+      run: function (doc) {
+        // Replace .form-search with .form-inline
+        
+      }
+    },
+    
+    {
+      title: "Navbar Structural Changes",
+      description: "",
+      run: function (doc) {
+        
+      }
+    },
+    
+    {
+      title: "Changes to Button Color Classes",
       description: "Add <code>btn-default</code> to <code>btn</code> elements with no other color. Replace <code>btn-inverse</code> with <code>btn-default</code> since inverse has been removed from Bootstrap 3.",
       run: function(doc) {
         var $buttons = $(doc).find(".btn:not(.btn-primary,.btn-success,.btn-info,.btn-warning,.btn-danger)");
@@ -81,7 +98,7 @@
     },
     
     {
-      title: "Remove Dividers from Breadcrumbs",
+      title: "Dividers Removed from Breadcrumbs",
       description: "Bootstrap 3 uses CSS to add the dividers between breadcrumbs. Remove all <code>span.divider</code> elements inside breadcrumbs.",
       run: function(doc) {
         $dividers = $(doc).find(".breadcrumb .divider")
@@ -148,15 +165,25 @@
   
     {
       title: "Progress Bar Structural Changes",
-      description: "",
+      description: "The inner element class is now <code>progress-bar</code>, not <code>bar</code>. Additionally, the bar colors also have a <code>progress-</code> prefix.",
       run: function (doc) {
-      }
-    },
-  
-    {
-      title: "Form Structural Changes",
-      description: "",
-      run: function (doc) {
+        $bars = $(doc).find(".progress .bar");
+        $bars.removeClass('bar').addClass('progress-bar');
+        
+        var colors = ['success','info','warning','danger']
+        $bars.each(function() {
+          for(var i = 0; i < colors.length; i++) {
+            var $this = $(this)
+            var klass = "bar-" + colors[i]
+            
+            if ($this.hasClass(klass)) {
+              $this.removeClass(klass).addClass("progress-" + klass);
+            }
+          }
+        });
+        
+        var count = $bars.length;
+        return (count > 0) ? count + " Replaced" : false;
       }
     },
   

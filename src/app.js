@@ -13,6 +13,7 @@ function ConverterCtrl($scope) {
     '        <div class="span6">\n' +
     '          <a class="btn btn-mini">Button</a>\n' +
     '          <p class="muted">And now some muted text...</p>\n' +
+    '          <div class="progress"><div class="bar bar-success" style="width: 40%;"></div></div>\n' +
     '        </div>\n' +
     '        <div class="span6">\n' + 
     '          <ul class="breadcrumb">\n' +
@@ -31,7 +32,9 @@ function ConverterCtrl($scope) {
     var report = BootstrapUpgrader.perform($scope.source, true);
     $scope.result = report.output;
     for (var i = 0; i < report.results.length; i++) {
-      $scope.rules[i].runMessage = report.results[i] || "No Changes";
+      var message = report.results[i] || "No Changes";
+      $scope.rules[i].runMessage = message;
+      $scope.rules[i].runClass = (message === "No Changes") ? "label-default" : "label-success";
     }
     $scope.hasRun = true;
   }
