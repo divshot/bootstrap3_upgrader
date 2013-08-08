@@ -114,9 +114,23 @@
     
     {
       title: "Navbar Structural Changes",
-      description: "",
+      description: "<p>Navbars have also gone under major structural change. Here's a summary of what we're doing:</p><ul><li>Replace <code>.navbar-search</code> with <code>.navbar-form</code></li><li>Replace <code>.navbar-inner</code> with <code>.container</code></li><li>Replace <code>.navbar > .nav</code> with <code>.navbar-nav</code></li><li><code>.brand</code> is now <code>.navbar-brand</code></li></ul>",
       run: function (doc) {
+        var count = 0;
         
+        var navbarSearches = $(doc).find(".navbar-search").removeClass('navbar-search').addClass('navbar-form');
+        count += navbarSearches.length;
+        
+        var navbarInners = $(doc).find(".navbar-inner").removeClass("navbar-inner").addClass("container");
+        count += navbarInners.length;
+        
+        var navbarNavs = $(doc).find(".navbar .nav").addClass("navbar-nav");
+        count += navbarNavs.length;
+        
+        var brands = $(doc).find(".navbar .brand").removeClass("brand").addClass("navbar-brand");
+        count += brands.length;
+        
+        return (count > 0) ? count + " Replaced" : false;
       }
     },
     
