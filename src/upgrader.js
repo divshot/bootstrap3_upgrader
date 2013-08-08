@@ -68,10 +68,47 @@
     
     {
       title: "Form Structural Changes",
-      description: "<p>Forms have undergone some major changes. Here's some of what needs to happen:</p><ul><li><code>form-search</code> is gone, replace with <code>form-inline</code></li><li>Remove <code>input-block-level</code> as inputs are 100% width by default</li><li>Replace <code>help-inline</code> with <code>help-block</code> as inline is no longer supported</li><li>Wrap checkboxes and radios in an extra <code>&lt;div&gt;</code></li><li>Replace <code>.radio.inline</code> and <code>.checkbox.inline</code> with <code>-inline</code> instead</li></ul>",
+      description: "<p>Forms have undergone some major changes. Here's some of what needs to happen:</p><ul><li><code>form-search</code> is gone, replace with <code>form-inline</code></li><li>Remove <code>input-block-level</code> as inputs are 100% width by default</li><li>Replace <code>help-inline</code> with <code>help-block</code> as inline is no longer supported</li><li>Change <code>.control-group</code> to <code>.form-group</code></li><li>Add column widths to horizontal form labels and <code>.controls</code></li><li>Remove <code>.controls</code> class</li><li>Add <code>form-control</code> class to inputs and selects.</li><li>Wrap checkboxes and radios in an extra <code>&lt;div&gt;</code></li><li>Replace <code>.radio.inline</code> and <code>.checkbox.inline</code> with <code>-inline</code> instead</li></ul>",
       run: function (doc) {
-        // Replace .form-search with .form-inline
+        var count = 0;
         
+        // Replace .form-search with .form-inline
+        var searchForms = $(doc).find('.form-search').removeClass('form-search').addClass('form-inline');
+        count += searchForms.length;
+        
+        // Remove input-block-level, it's now unncecessary
+        var blockLevelInputs = $(doc).find('.input-block-level').removeClass('input-block-level');
+        count += blockLevelInputs.length;
+        
+        // Replace .help-inline with .help-block
+        var inlineHelps = $(doc).find(".help-inline").removeClass('help-inline').addClass('help-block');
+        count += inlineHelps.length;
+        
+        var controlGroups = $(doc).find(".control-group").removeClass('control-group').addClass('form-group');
+        count += controlGroups.length;
+        
+        var horizontalLabels = $(doc).find('.horizontal-form .control-label').addClass('col-lg-2');
+        count += horizontalLabels.length;
+        
+        var horizontalControls = $(doc).find('.horizontal-form .controls').addClass('col-lg-2').removeClass('controls');
+        count += horizontalControls.length;
+        
+        var formInputs = $(doc).find("input:not([type=checkbox], [type=radio])").addClass("form-control");
+        count += formInputs.length;
+        
+        var checkboxLabels = $(doc).find("label.checkbox:not(.inline)").removeClass("checkbox").wrap("<div class='checkbox'></div>");
+        count += checkboxLabels.length;
+        
+        var checkboxInlineLabels = $(doc).find(".checkbox.inline").removeClass("inline checkbox").addClass("checkbox-inline");
+        count += checkboxInlineLabels.length;
+        
+        var radioLabels = $(doc).find("label.radio:not(.inline)").removeClass("radio").wrap("<div class='checkbox'></div>");
+        count += checkboxLabels.length;
+        
+        var radioInlineLabels = $(doc).find(".radio.inline").removeClass("inline radio").addClass("radio-inline");
+        count += radioInlineLabels.length;
+        
+        return (count > 0) ? count + " Replaced" : false;
       }
     },
     
@@ -155,7 +192,7 @@
       title: "Hero Unit is now Jumbotron",
       description: "The component formerly known as a Hero Unit is now a Jumbotron, so swap <code>hero-unit</code> for <code>jumbotron</code>.",
       run: function(doc) {
-        $jumbotrons = $(".hero-unit");
+        $jumbotrons = $(doc).find(".hero-unit");
         $jumbotrons.removeClass('hero-unit').addClass('jumbotron');
         var count = $jumbotrons.length;
         
@@ -235,14 +272,26 @@
   var Upgrader = {
     rules: RULESET,
     perform: function(input, report) {
-      var doc = (new DOMParser()).parseFromString(input, 'text/html');
+      // See if this is a whole document or just a fragment.
+      if (input.toLowerCase().indexOf("<html") >= 0) {
+        var doc = (new DOMParser()).parseFromString(input, 'text/html');
+        var fragment = false;
+      } else {
+        var doc = $("<div id='upgrade-wrapper'>" + input + "</div>") 
+        var fragment = true;
+      }
+      
       var results = [];
       for (var i = 0; i < Upgrader.rules.length; i++) {
         var rule = Upgrader.rules[i];
         results.push(rule.run(doc));
       }
       
-      var output = "<!doctype html>\n" + doc.getElementsByTagName("html")[0].outerHTML;
+      if (fragment) {
+        var output = $(doc).html();
+      } else {
+        var output = "<!doctype html>\n" + doc.getElementsByTagName("html")[0].outerHTML;
+      }
       
       if (report) {
         return {

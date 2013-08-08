@@ -5,6 +5,7 @@
   <head>
     <title>Upgrade Bootstrap 2 HTML to Bootstrap 3 - Brought to you by Divshot</title>
     <meta name="viewport" content="width=device-width">
+    <meta name="description" value="A handy reference guide and automated tool for upgrading from Bootstrap 2.3 to Bootstrap 3">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
@@ -12,15 +13,18 @@
     <script src="lib/dom_html.js"></script>
     <script src="src/upgrader.js"></script>
     <script src="src/app.js"></script>
-    <style>textarea.form-control { font-size: 11px; font-family: monospace; } </style>
+    <style>
+      textarea.form-control { font-size: 11px; font-family: monospace; }
+      footer { margin: 30px 0; padding-top: 10px; border-top: 1px solid #ddd; }
+    </style>
   </head>
   
   <body ng-app ng-controller="ConverterCtrl">
     <div class="container">
       <h1 class="page-header text-center">Bootstrap 3 HTML Upgrader <br class="hidden-lg"><small>Get your HTML from Bootstrap 2.3 to 3.0!</small></h1>
+      <p class='lead'>We've gone through the Bootstrap 3 documentation and tried our best to extract out all the changes into an automatic tool. These are the rules our automated upgrader takes when it modifies your HTML, but it's also a handy checklist to keep in mind if you're upgrading code manually!</p>
       <div class="row">
         <div class="col-lg-6">
-          <div class='alert alert-info'><a data-dismiss='alert' class='close'>&times;</a> These are the rules our automated upgrader takes when it upgrades your HTML. It's also a handy checklist to keep in mind if you're upgrading code manually!</div>
           <div class="panel panel-primary">
             <div class="panel-heading">The Process</div>
             <ul class="list-group list-group-flush">
@@ -46,6 +50,10 @@
           </div>
         </div>
       </div>
+      
+      <footer>
+        <p class='text-muted text-center'>Brought to you by your Bootstrap-loving friends at <a href="http://www.divshot.com/">Divshot</a>. <a href="https://github.com/divshot/bootstrap3_upgrader">Fork this on GitHub</a>.</p>
+      </footer>
     </div>
   </body>
 
