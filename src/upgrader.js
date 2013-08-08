@@ -217,13 +217,6 @@
         return (count > 0) ? count + " Replaced" : false;
       }
     },
-  
-    {
-      title: "Modal Hide Class Removal",
-      description: "",
-      run: function (doc) {
-      }
-    },
 
     {
       title: "Upgrade Responsive Classes",
