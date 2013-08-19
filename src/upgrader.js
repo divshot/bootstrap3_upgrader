@@ -11,7 +11,7 @@
           $link = $(this);
           var href = $link.attr('href')
           if ( href && href.match(new RegExp("//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.[0-2]/css/bootstrap-combined.(no-icons\.)?min.css")) ) {
-            $link.attr("href","//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css");
+            $link.attr("href","//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css");
             count++;
           }
         });
@@ -21,7 +21,7 @@
           $script = $(this);
           var src = $script.attr('src')
           if ( src && src.match(new RegExp("//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.[0-2]/js/bootstrap.min.js")) ) {
-            $script.attr("href","//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js");
+            $script.attr("href","http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js");
             count++;
           }
         });
@@ -32,7 +32,7 @@
     
     {
       title: "Revamped Grid System",
-      description: "Look for <code>spanX</code> non-form containers and replace with <code>col-lg-X col-sm-X</code> (leaving mobile to collapse into a single column). Change <code>row-fluid</code> to <code>row</code> since they are now the same. Remove <code>container-fluid</code> since it is now a noop.",
+      description: "Look for <code>spanX</code> non-form containers and replace with <code>col-lg-X</code> <code>col-md-X</code> <code>col-sm-X</code> (leaving mobile to collapse into a single column). Change <code>row-fluid</code> to <code>row</code> since they are now the same. Remove <code>container-fluid</code> since it is now a noop.",
       run: function(doc) {
         var count = 0;
         
@@ -42,7 +42,7 @@
             $this = $(this);
             // Make sure we're dealing with a container, not a form element
             if ( $this.is("section, div, aside, article") ) {
-              $this.removeClass("span" + sI).addClass("col-sm-" + sI + " col-lg-" + sI);
+              $this.removeClass("span" + sI).addClass("col-sm-" + sI + " col-md-" + sI, " col-lg-" + sI);
               count += $this.length;
             }
           });
@@ -114,7 +114,7 @@
     
     {
       title: "Navbar Structural Changes",
-      description: "<p>Navbars have also gone under major structural change. Here's a summary of what we're doing:</p><ul><li>Replace <code>.navbar-search</code> with <code>.navbar-form</code></li><li>Replace <code>.navbar-inner</code> with <code>.container</code></li><li>Replace <code>.navbar .nav</code> with <code>.navbar-nav</code></li><li><code>.brand</code> is now <code>.navbar-brand</code></li></ul>",
+      description: "<p>Navbars have also gone under major structural change. Here's a summary of what we're doing:</p><ul><li>Replace <code>.navbar-search</code> with <code>.navbar-form</code></li><li>Replace <code>.navbar-inner</code> with <code>.container</code></li><li>Replace <code>.navbar .nav</code> with <code>.navbar-nav</code></li><li><code>.brand</code> is now <code>.navbar-brand</code></li><li><code>.navbar.pull-left</code> is now <code>.navbar-left</code></li><li><code>.navbar.pull-right</code> is now <code>.navbar-right</code></li></ul>",
       run: function (doc) {
         var count = 0;
         
@@ -129,11 +129,17 @@
         
         var brands = $(doc).find(".navbar .brand").removeClass("brand").addClass("navbar-brand");
         count += brands.length;
+
+        var rightNavs = $(doc).find(".navbar.pull-right").removeClass("pull-right").addClass("navbar-right");
+        count += rightNavs.length;
+
+        var leftNavs = $(doc).find(".navbar.pull-left").removeClass("pull-left").addClass("navbar-left");
+        count += leftNavs.length;
         
         return (count > 0) ? count + " Replaced" : false;
       }
     },
-    
+
     {
       title: "Changes to Button Color Classes",
       description: "Add <code>btn-default</code> to <code>btn</code> elements with no other color. Replace <code>btn-inverse</code> with <code>btn-default</code> since inverse has been removed from Bootstrap 3.",
@@ -240,7 +246,7 @@
 
     {
       title: "Upgrade Button, Pagination, and Well sizes.",
-      description: "Change sizes from <code>well-[mini|small|large]</code> to <code>well-[xs|sm|lg]</code>",
+      description: "Change sizes from <code>[button|pagination|well]-[mini|small|large]</code> to <code>[button|pagination|well]-[xs|sm|lg]</code>",
       run: function(doc) {
         var types = ['btn', 'pagination', 'well'];
         var longSizes = ['mini', 'small', 'large'];
@@ -255,6 +261,16 @@
             count += $targets.length;
           }
         }
+        return (count > 0) ? count + ' Replaced' : false;
+      }
+    },
+
+    {
+      title: "Upgrade Alert Block Classes.",
+      description: "Changes <code>.alert-block</code> to simply <code>.alert</code>",
+      run: function (doc) {
+        var count = 0;
+        var alerts = $(doc).find(".alert-block").removeClass("alert-block").addClass("alert")
         return (count > 0) ? count + ' Replaced' : false;
       }
     }
