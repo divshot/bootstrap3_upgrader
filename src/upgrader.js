@@ -11,7 +11,7 @@
           $link = $(this);
           var href = $link.attr('href')
           if ( href && href.match(new RegExp("//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.[0-2]/css/bootstrap-combined.(no-icons\.)?min.css")) ) {
-            $link.attr("href","//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css");
+            $link.attr("href","//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css");
             count++;
           }
         });
@@ -21,7 +21,7 @@
           $script = $(this);
           var src = $script.attr('src')
           if ( src && src.match(new RegExp("//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.[0-2]/js/bootstrap.min.js")) ) {
-            $script.attr("href","//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js");
+            $script.attr("href","http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js");
             count++;
           }
         });
@@ -32,22 +32,32 @@
     
     {
       title: "Revamped Grid System",
-      description: "Look for <code>spanX</code> non-form containers and replace with <code>col-lg-X col-sm-X</code> (leaving mobile to collapse into a single column). Change <code>row-fluid</code> to <code>row</code> since they are now the same. Remove <code>container-fluid</code> since it is now a noop.",
+      description: "Look for <code>spanX</code> non-form containers and replace with <code>col-lg-X</code> <code>col-md-X</code> <code>col-sm-X</code> (leaving mobile to collapse into a single column). Change <code>row-fluid</code> to <code>row</code> since they are now the same. Remove <code>container-fluid</code> since it is now a noop.",
       run: function(doc) {
         var count = 0;
         
         for (var i = 1; i <= 12; i++) {
           var sI = i.toString();
+          $(doc).find(".offset" + sI).each(function() {
+            $this = $(this);
+            // Make sure we're dealing with a container, not a form element
+            if ( $this.is("section, div, aside, article") ) {
+              $this.removeClass("offset" + sI).addClass("col-lg-offset-" + sI);
+              count += $this.length;
+            }
+          });
+
           $(doc).find(".span" + sI).each(function() {
             $this = $(this);
             // Make sure we're dealing with a container, not a form element
             if ( $this.is("section, div, aside, article") ) {
-              $this.removeClass("span" + sI).addClass("col-sm-" + sI + " col-lg-" + sI);
+              $this.removeClass("span" + sI).addClass("col-sm-" + sI + " col-md-" + sI, " col-lg-" + sI);
               count += $this.length;
             }
           });
         }
         
+
         // Remove .row-fluid and replace with .row since they are equivalent now
         $fluidRows = $(doc).find(".row-fluid")
         if ($fluidRows.length > 0) {
@@ -107,14 +117,14 @@
         
         var radioInlineLabels = $(doc).find(".radio.inline").removeClass("inline radio").addClass("radio-inline");
         count += radioInlineLabels.length;
-        
+
         return (count > 0) ? count + " Replaced" : false;
       }
     },
     
     {
       title: "Navbar Structural Changes",
-      description: "<p>Navbars have also gone under major structural change. Here's a summary of what we're doing:</p><ul><li>Replace <code>.navbar-search</code> with <code>.navbar-form</code></li><li>Replace <code>.navbar-inner</code> with <code>.container</code></li><li>Replace <code>.navbar .nav</code> with <code>.navbar-nav</code></li><li><code>.brand</code> is now <code>.navbar-brand</code></li></ul>",
+      description: "<p>Navbars have also gone under major structural change. Here's a summary of what we're doing:</p><ul><li>Replace <code>.navbar-search</code> with <code>.navbar-form</code></li><li>Replace <code>.navbar-inner</code> with <code>.container</code></li><li>Replace <code>.navbar .nav</code> with <code>.navbar-nav</code></li><li><code>.brand</code> is now <code>.navbar-brand</code></li><li><code>.navbar.pull-left</code> is now <code>.navbar-left</code></li><li><code>.navbar.pull-right</code> is now <code>.navbar-right</code></li><li><code>.nav-collapse</code> is now <code>.navbar-collapse</code></li><li><code>.navbar-brand, .navbar-toggle</code> are wrapped by <code>.navbar-header</code></li><li><code>.navbar:not(.navbar-inverse)</code> is now <code>.navbar.navbar-default</code></li></ul>",
       run: function (doc) {
         var count = 0;
         
@@ -129,11 +139,37 @@
         
         var brands = $(doc).find(".navbar .brand").removeClass("brand").addClass("navbar-brand");
         count += brands.length;
+
+        var rightNavs = $(doc).find(".navbar.pull-right").removeClass("pull-right").addClass("navbar-right");
+        count += rightNavs.length;
+
+        var leftNavs = $(doc).find(".navbar.pull-left").removeClass("pull-left").addClass("navbar-left");
+        count += leftNavs.length;
+
+        var collapsed = $(doc).find(".nav-collapse").removeClass("nav-collapse").addClass("navbar-collapse");
+        count += collapsed.length;
+
+        var wrappedByHeader = $(doc).find(".navbar-brand, .navbar-toggle");
+        var wrapped;
+        var header;
+        var navbar;
+        for (var i = wrappedByHeader.length - 1; i >= 0; i--) {
+          wrapped = $(wrappedByHeader[i]);
+          if(wrapped.parent().is(".navbar-header")) continue
+          navbar = wrapped.parent();
+          header = $("<div class='navbar-header'>");
+          header.append(wrapped.parent().children(".navbar-brand, .navbar-toggle"));
+          navbar.prepend(header);
+          count += header.children().length;
+        };
+
+        var inverseNavs = $(doc).find(".navbar:not(.navbar-inverse)").addClass("navbar-default");
+        count += inverseNavs.length;
         
         return (count > 0) ? count + " Replaced" : false;
       }
     },
-    
+
     {
       title: "Changes to Button Color Classes",
       description: "Add <code>btn-default</code> to <code>btn</code> elements with no other color. Replace <code>btn-inverse</code> with <code>btn-default</code> since inverse has been removed from Bootstrap 3.",
@@ -240,7 +276,7 @@
 
     {
       title: "Upgrade Button, Pagination, and Well sizes.",
-      description: "Change sizes from <code>well-[mini|small|large]</code> to <code>well-[xs|sm|lg]</code>",
+      description: "Change sizes from <code>[button|pagination|well]-[mini|small|large]</code> to <code>[button|pagination|well]-[xs|sm|lg]</code>",
       run: function(doc) {
         var types = ['btn', 'pagination', 'well'];
         var longSizes = ['mini', 'small', 'large'];
@@ -255,6 +291,38 @@
             count += $targets.length;
           }
         }
+        return (count > 0) ? count + ' Replaced' : false;
+      }
+    },
+
+    {
+      title: "Upgrade Alert Block Classes.",
+      description: "<ul><li>Changes <code>.alert-block</code> to simply <code>.alert</code><br>Alerts without a modifier are defaulted to <code>.alert-warning</code>.</li><li><code>.alert-dismissable</code> added to all alerts that may be dismissed.</li></ul>",
+      run: function (doc) {
+        var count = 0;
+        var alerts = $(doc).find(".alert-block").removeClass("alert-block").addClass("alert");
+        count += alerts.length;
+
+        var defaulted = $(doc).find(".alert:not(.alert-success, .alert-info, .alert-warning, .alert-danger)").addClass("alert-warning");
+        count += alerts.length;
+
+        var dismissed = $(doc).find(".alert:not(.alert-dismissable) .close").parent(".alert").addClass("alert-dismissable");
+        count += dismissed.length;
+
+        return (count > 0) ? count + ' Replaced' : false;
+      }
+    },
+
+    {
+      title: "Upgrade Label Classes.",
+      description: "Changes <code>.label</code> to <code>.label.label-default</code>",
+      run: function(doc) {
+        var count = 0;
+        var types = [];
+
+        var defaults = $(doc).find(".label:not(.label-success, .label-warning, .label-important, .label-info, .label-inverse)");
+        count += defaults.addClass("label-default");
+
         return (count > 0) ? count + ' Replaced' : false;
       }
     }
