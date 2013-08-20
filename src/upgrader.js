@@ -107,14 +107,14 @@
         
         var radioInlineLabels = $(doc).find(".radio.inline").removeClass("inline radio").addClass("radio-inline");
         count += radioInlineLabels.length;
-        
+
         return (count > 0) ? count + " Replaced" : false;
       }
     },
     
     {
       title: "Navbar Structural Changes",
-      description: "<p>Navbars have also gone under major structural change. Here's a summary of what we're doing:</p><ul><li>Replace <code>.navbar-search</code> with <code>.navbar-form</code></li><li>Replace <code>.navbar-inner</code> with <code>.container</code></li><li>Replace <code>.navbar .nav</code> with <code>.navbar-nav</code></li><li><code>.brand</code> is now <code>.navbar-brand</code></li><li><code>.navbar.pull-left</code> is now <code>.navbar-left</code></li><li><code>.navbar.pull-right</code> is now <code>.navbar-right</code></li></ul>",
+      description: "<p>Navbars have also gone under major structural change. Here's a summary of what we're doing:</p><ul><li>Replace <code>.navbar-search</code> with <code>.navbar-form</code></li><li>Replace <code>.navbar-inner</code> with <code>.container</code></li><li>Replace <code>.navbar .nav</code> with <code>.navbar-nav</code></li><li><code>.brand</code> is now <code>.navbar-brand</code></li><li><code>.navbar.pull-left</code> is now <code>.navbar-left</code></li><li><code>.navbar.pull-right</code> is now <code>.navbar-right</code></li><li><code>.nav-collapse</code> is now <code>.navbar-collapse</code></li><li><code>.navbar-brand, .navbar-toggle</code> are wrapped by <code>.navbar-header</code></li><li><code>.navbar:not(.navbar-inverse)</code> is now <code>.navbar.navbar-default</code></li></ul>",
       run: function (doc) {
         var count = 0;
         
@@ -135,6 +135,26 @@
 
         var leftNavs = $(doc).find(".navbar.pull-left").removeClass("pull-left").addClass("navbar-left");
         count += leftNavs.length;
+
+        var collapsed = $(doc).find(".nav-collapse").removeClass("nav-collapse").addClass("navbar-collapse");
+        count += collapsed.length;
+
+        var wrappedByHeader = $(doc).find(".navbar-brand, .navbar-toggle");
+        var wrapped;
+        var header;
+        var navbar;
+        for (var i = wrappedByHeader.length - 1; i >= 0; i--) {
+          wrapped = $(wrappedByHeader[i]);
+          if(wrapped.parent().is(".navbar-header")) continue
+          navbar = wrapped.parent();
+          header = $("<div class='navbar-header'>");
+          header.append(wrapped.parent().children(".navbar-brand, .navbar-toggle"));
+          navbar.prepend(header);
+          count += header.children().length;
+        };
+
+        var inverseNavs = $(doc).find(".navbar:not(.navbar-inverse)").addClass("navbar-default");
+        count += inverseNavs.length;
         
         return (count > 0) ? count + " Replaced" : false;
       }
@@ -267,10 +287,32 @@
 
     {
       title: "Upgrade Alert Block Classes.",
-      description: "Changes <code>.alert-block</code> to simply <code>.alert</code>",
+      description: "<ul><li>Changes <code>.alert-block</code> to simply <code>.alert</code><br>Alerts without a modifier are defaulted to <code>.alert-warning</code>.</li><li><code>.alert-dismissable</code> added to all alerts that may be dismissed.</li></ul>",
       run: function (doc) {
         var count = 0;
-        var alerts = $(doc).find(".alert-block").removeClass("alert-block").addClass("alert")
+        var alerts = $(doc).find(".alert-block").removeClass("alert-block").addClass("alert");
+        count += alerts.length;
+
+        var defaulted = $(doc).find(".alert:not(.alert-success, .alert-info, .alert-warning, .alert-danger)").addClass("alert-warning");
+        count += alerts.length;
+
+        var dismissed = $(doc).find(".alert:not(.alert-dismissable) .close").parent(".alert").addClass("alert-dismissable");
+        count += dismissed.length;
+
+        return (count > 0) ? count + ' Replaced' : false;
+      }
+    },
+
+    {
+      title: "Upgrade Label Classes.",
+      description: "Changes <code>.label</code> to <code>.label.label-default</code>",
+      run: function(doc) {
+        var count = 0;
+        var types = [];
+
+        var defaults = $(doc).find(".label:not(.label-success, .label-warning, .label-important, .label-info, .label-inverse)");
+        count += defaults.addClass("label-default");
+
         return (count > 0) ? count + ' Replaced' : false;
       }
     }
