@@ -38,6 +38,15 @@
         
         for (var i = 1; i <= 12; i++) {
           var sI = i.toString();
+          $(doc).find(".offset" + sI).each(function() {
+            $this = $(this);
+            // Make sure we're dealing with a container, not a form element
+            if ( $this.is("section, div, aside, article") ) {
+              $this.removeClass("offset" + sI).addClass("col-lg-offset-" + sI);
+              count += $this.length;
+            }
+          });
+
           $(doc).find(".span" + sI).each(function() {
             $this = $(this);
             // Make sure we're dealing with a container, not a form element
@@ -48,6 +57,7 @@
           });
         }
         
+
         // Remove .row-fluid and replace with .row since they are equivalent now
         $fluidRows = $(doc).find(".row-fluid")
         if ($fluidRows.length > 0) {
