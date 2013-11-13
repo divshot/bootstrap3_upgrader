@@ -69,7 +69,7 @@
         $fluidContainers = $(doc).find(".container-fluid")
         if ($fluidContainers.length > 0) {
           count += $fluidContainers.length;
-          $fluidRows.removeClass('container-fluid');
+          $fluidContainers.removeClass('container-fluid').addClass('container');
         }
         
         return (count > 0) ? count + " Replaced" : false;
