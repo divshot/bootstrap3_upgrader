@@ -32,7 +32,7 @@
     
     {
       title: "Revamped Grid System",
-      description: "Look for <code>spanX</code> non-form containers and replace with <code>col-lg-X</code> <code>col-md-X</code> <code>col-sm-X</code> (leaving mobile to collapse into a single column). Change <code>row-fluid</code> to <code>row</code> since they are now the same. Remove <code>container-fluid</code> since it is now a noop.",
+      description: "Look for <code>spanX</code> non-form containers and replace with <code>col-lg-X</code> <code>col-md-X</code> <code>col-sm-X</code> (leaving mobile to collapse into a single column). Change <code>row-fluid</code> to <code>row</code> since they are now the same. Since <code>container-fluid</code> is now a noop, replace it with <code>container</code>.",
       run: function(doc) {
         var count = 0;
         
