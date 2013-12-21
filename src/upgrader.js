@@ -314,14 +314,26 @@
     },
 
     {
-      title: "Upgrade Label Classes.",
+      title: "Add Default Label Class.",
       description: "Changes <code>.label</code> to <code>.label.label-default</code>",
       run: function(doc) {
         var count = 0;
-        var types = [];
 
         var defaults = $(doc).find(".label:not(.label-success, .label-warning, .label-important, .label-info, .label-inverse)");
         count += defaults.addClass("label-default");
+
+        return (count > 0) ? count + ' Replaced' : false;
+      }
+    },
+
+    {
+      title: "Upgrade Old Label Classes.",
+      description: "Changes <code>.label.label-important</code> to <code>.label.label-default</code>",
+      run: function(doc) {
+        var count = 0;
+
+        var items = $(doc).find(".label.label-important");
+        count += items.addClass("label-danger").removeClass("label-important");
 
         return (count > 0) ? count + ' Replaced' : false;
       }
